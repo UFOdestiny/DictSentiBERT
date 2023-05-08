@@ -35,10 +35,7 @@ class Train:
         self.tokenizer = None
         self.DATA = None
         self.DATA_tk = None
-
         self.history = dict()
-
-        # self._make_model(model_name, method_name)
 
     def _make_model(self, model_name, method_name):
         self.model_name = model_name
@@ -157,7 +154,6 @@ class Train:
                 path=corpus_path, tokenizer=self.tokenizer, train_batch_size=train_batch_size, ratio=corpus_ratio,
                 test_batch_size=test_batch_size, model_name=self.model_name, method_name=self.method_name,
                 workers=workers)
-
             self.DATA_tk = self.model_name
         return self.DATA
 
