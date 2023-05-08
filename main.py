@@ -38,6 +38,12 @@ class Train:
         self.history = dict()
 
     def _make_model(self, model_name, method_name):
+        """
+        construct model
+        :param model_name: pre-trained model
+        :param method_name: method
+        :return:
+        """
         self.model_name = model_name
         self.method_name = method_name
         # self.logger.info(f"> creating model {model_name}")
@@ -83,6 +89,10 @@ class Train:
         self._print_args()
 
     def _print_args(self):
+        """
+        print arguments
+        :return:
+        """
         # self.logger.info("> training arguments:")
         for arg in ["device", "train_batch_size", "test_batch_size", "self.model_name",
                     "self.method_name", "corpus_ratio", "num_epoch"]:
@@ -139,6 +149,11 @@ class Train:
         return test_loss / n_test, n_correct / n_test, micro_f1 / n, macro_f1 / n
 
     def save_history(self, data_dict=None):
+        """
+        save history of every batch
+        :param data_dict:
+        :return:
+        """
         name = f"{self.model_name}_{self.method_name}"
         self.history[name] = data_dict
 
@@ -149,6 +164,10 @@ class Train:
             json.dump(data_dict, f)
 
     def _get_data(self):
+        """
+        get data before training
+        :return:
+        """
         if not self.DATA or (self.DATA_tk != self.model_name):
             self.DATA = load_dataset(
                 path=corpus_path, tokenizer=self.tokenizer, train_batch_size=train_batch_size, ratio=corpus_ratio,
@@ -158,6 +177,10 @@ class Train:
         return self.DATA
 
     def _run(self):
+        """
+        run the process
+        :return:
+        """
         train_dataloader, test_dataloader = self._get_data()
 
         _params = filter(lambda x: x.requires_grad, self.model.parameters())
@@ -199,6 +222,10 @@ class Train:
         self.save_history(process_data)
 
     def loop(self):
+        """
+        train every model+method
+        :return:
+        """
         for model in model_names:
             for method in method_names:
                 self._make_model(model, method)
